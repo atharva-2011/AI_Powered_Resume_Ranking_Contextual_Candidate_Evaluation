@@ -1,0 +1,25 @@
+.env
+api secret key.txt
+__pycache__/
+*.pyc
+.venv/
+*.log
+__pycache__/
+
+.env
+
+.venv/
+
+*.pyc
+
+logs/
+
+reports/
+
+.cache/
+
+.streamlit/
+
+.idea/
+
+.vscode/
