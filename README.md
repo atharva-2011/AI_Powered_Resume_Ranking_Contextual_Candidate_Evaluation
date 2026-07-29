@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-<img src="assets/IMAGES/streamlit-app.png" width="100%">
+<img src="assets\IMAGES\streamlit-app.png" width="100%">
 </p>
 
 ---
@@ -27,11 +27,14 @@ Unlike traditional ATS platforms that rely primarily on keyword matching, this p
 The system integrates modern NLP models, semantic embeddings, contextual ranking, and LLM-powered reasoning to help recruiters identify the most suitable candidates efficiently.
 
 ---
+
 ## 🌐 Live Demo
 
 🚀 Try the application here:
 
-**👉 http://ai-resume-ranking.streamlit.app**
+**👉 http://ai-resume-screening-ranking.streamlit.app**
+
+
 
 # ✨ Key Features
 
@@ -79,7 +82,7 @@ This hybrid architecture balances traditional ATS logic with modern AI technique
 # 🏗️ System Architecture
 
 <p align="center">
-<img src="assets/IMAGES/system-architecture.png" width="100%">
+<img src="assets\IMAGES\system-architecture.png" width="100%">
 </p>
 
 ---
@@ -199,7 +202,7 @@ pip install -r requirements.txt
 ```
 
 <p align="center">
-<img src="assets/IMAGES/requirements.png" width="90%">
+<img src="assets\IMAGES\requirements.png" width="90%">
 </p>
 
 ---
@@ -216,7 +219,7 @@ GROQ_MODEL=openai/gpt-oss-120b
 Configuration reference:
 
 <p align="center">
-<img src="assets/IMAGES/system-config.png" width="90%">
+<img src="assets\IMAGES\system-config.png" width="90%">
 </p>
 
 ---
@@ -295,7 +298,7 @@ Final Candidate Ranking
 ## 🏠 Home Dashboard
 
 <p align="center">
-<img src="assets/screenshots/home.png" width="100%">
+<img src="assets\screenshots\home.png" width="100%">
 </p>
 
 The Home Dashboard allows recruiters to upload resumes, provide a Job Description, configure evaluation settings, and initiate candidate ranking.
@@ -305,7 +308,7 @@ The Home Dashboard allows recruiters to upload resumes, provide a Job Descriptio
 ## 📑 Resume Parsing
 
 <p align="center">
-<img src="assets/screenshots/parsing.png" width="100%">
+<img src="assets\screenshots\parsing.png" width="100%">
 </p>
 
 The Resume Parser extracts clean textual content from PDF and DOCX resumes before passing it to the LLM for structured information extraction.
@@ -315,7 +318,7 @@ The Resume Parser extracts clean textual content from PDF and DOCX resumes befor
 ## 👥 Multiple Resume Evaluation
 
 <p align="center">
-<img src="assets/screenshots/multiple-resumes-against-one-jd.png" width="100%">
+<img src="assets\screenshots\multiple-resumes-against-one-jd.png" width="100%">
 </p>
 
 Multiple resumes can be evaluated simultaneously against a single Job Description, enabling recruiters to compare candidates side-by-side.
@@ -325,7 +328,7 @@ Multiple resumes can be evaluated simultaneously against a single Job Descriptio
 ## 📊 Candidate Summary
 
 <p align="center">
-<img src="assets/screenshots/candidate-summary.png" width="100%">
+<img src="assets\screenshots\candidate-summary.png" width="100%">
 </p>
 
 Each evaluated candidate receives:
