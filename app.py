@@ -642,6 +642,6 @@ else:
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
-    "<div class='footer'>© 2026 < strong > Atharva Jivan Ayachit < /strong > . All Rights Reserved.</div>",
+    "<div class='footer'>© 2026 Atharva Jivan Ayachit  . All Rights Reserved.</div>",
     unsafe_allow_html=True,
 )
