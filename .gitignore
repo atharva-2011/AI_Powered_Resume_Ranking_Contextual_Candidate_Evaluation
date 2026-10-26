@@ -1,25 +1,64 @@
+# Environment variables & Secrets
 .env
+.env.*
+!.env.example
 api secret key.txt
+*.pem
+*.key
+
+# Python Bytecode & Cache
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
 .venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Django local database & static collected
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Logs & Debugging
 *.log
-__pycache__/
-
-.env
-
-.venv/
-
-*.pyc
-
 logs/
+*.pid
 
+# Output & Reports
 reports/
+output/
+downloads/
 
+# Cache & Temporary Files
 .cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
-.streamlit/
-
-.idea/
-
+# Editor & IDE settings
 .vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+

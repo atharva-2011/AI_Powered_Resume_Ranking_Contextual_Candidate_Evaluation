@@ -14,13 +14,13 @@ it inline in the UI.
 """
 
 import os
-from typing import Callable
-from streamlit.runtime.uploaded_file_manager import UploadedFile
+from typing import Any, Callable
 import pdfplumber as pdfs
 from docx import Document
 
 
-def extract_text_from_pdf(file: UploadedFile) -> str:
+def extract_text_from_pdf(file: Any) -> str:
+
     text_chunks: list[str] = []
     try:
         with pdfs.open(file) as pdf:
@@ -40,7 +40,7 @@ def extract_text_from_pdf(file: UploadedFile) -> str:
     return full_text
 
 
-def extract_text_from_docx(file: UploadedFile) -> str:
+def extract_text_from_docx(file: Any) -> str:
     try:
         document = Document(file)
     except Exception as e:
@@ -68,26 +68,48 @@ def extract_text_from_docx(file: UploadedFile) -> str:
     return full_text
 
 
-EXTRACTORS: dict[str, Callable[[UploadedFile], str]] = {
+def extract_text_from_txt(file: Any) -> str:
+    try:
+        if hasattr(file, "read"):
+            content = file.read()
+            if hasattr(file, "seek"):
+                file.seek(0)
+            if isinstance(content, bytes):
+                return content.decode("utf-8", errors="replace").strip()
+            return str(content).strip()
+        elif hasattr(file, "getvalue"):
+            val = file.getvalue()
+            if isinstance(val, bytes):
+                return val.decode("utf-8", errors="replace").strip()
+            return str(val).strip()
+        else:
+            raise ValueError("Unable to read content from text file.")
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse TXT file: {e}")
+
+
+EXTRACTORS: dict[str, Callable[[Any], str]] = {
     ".pdf": extract_text_from_pdf,
     ".docx": extract_text_from_docx,
+    ".txt": extract_text_from_txt,
 }
 
 
-def extract_text(file: UploadedFile, filename: str | None = None) -> str:
+
+def extract_text(file: Any, filename: str | None = None) -> str:
     """
     Unified entry point. `filename` is required to determine format when
-    `file` is a stream without a reliable .name (e.g. some upload objects) --
-    but Streamlit's UploadedFile does expose .name, so we fall back to that.
+    `file` is a stream without a reliable .name.
     """
     name = filename or getattr(file, "name", None)
     if not name:
         raise ValueError("Cannot determine file type: no filename provided.")
 
     ext = os.path.splitext(name)[1].lower()
-    extractor: Callable[[UploadedFile], str] | None = EXTRACTORS.get(ext)
+    extractor: Callable[[Any], str] | None = EXTRACTORS.get(ext)
     if extractor is None:
         raise ValueError(
             f"Unsupported file type '{ext}'. Supported: {list(EXTRACTORS.keys())}"
         )
     return extractor(file)
+

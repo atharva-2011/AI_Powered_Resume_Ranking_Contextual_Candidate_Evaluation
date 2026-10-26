@@ -3,55 +3,37 @@
 <p align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-FF4B4B?style=for-the-badge&logo=streamlit)
+![Django](https://img.shields.io/badge/Django-5.2-092E20?style=for-the-badge&logo=django)
 ![Groq](https://img.shields.io/badge/Groq-LLM-orange?style=for-the-badge)
 ![Sentence Transformers](https://img.shields.io/badge/SentenceTransformers-MiniLM-success?style=for-the-badge)
 ![Cross Encoder](https://img.shields.io/badge/Cross_Encoder-STSB_RoBERTa-purple?style=for-the-badge)
+![Author](https://img.shields.io/badge/Architected_By-Atharva_Ayachit-6366f1?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
-</p>
-
-<p align="center">
-<img src="assets\IMAGES\streamlit-app.png" width="100%">
 </p>
 
 ---
 
 # 📌 Overview
 
-**AI Powered Resume Ranking & Contextual Candidate Evaluation** is an enterprise-inspired Applicant Tracking System (ATS) that intelligently evaluates resumes against job descriptions using a hybrid AI pipeline.
+**AI Powered Resume Ranking & Contextual Candidate Evaluation** is an enterprise-grade Applicant Tracking System (ATS) that evaluates candidate resumes against job descriptions using a hybrid AI pipeline. Architected and designed **By Atharva Ayachit**.
 
-Unlike traditional ATS platforms that rely primarily on keyword matching, this project combines semantic understanding, contextual ranking, deterministic rule evaluation, and explainable AI to provide accurate and transparent hiring recommendations.
-
-The system integrates modern NLP models, semantic embeddings, contextual ranking, and LLM-powered reasoning to help recruiters identify the most suitable candidates efficiently.
+Built as a production-grade **Django** application with a fluid, animated, and fully responsive glassmorphic design tailored for mobile phones, tablets, laptops, and ultra-wide desktop displays.
 
 ---
 
-## 🌐 Live Demo
-
-🚀 Try the application here:
-
-**👉 http://ai-resume-screening-ranking.streamlit.app**
-
-
-
 # ✨ Key Features
 
-- 📄 Upload multiple PDF and DOCX resumes
-- 📝 Upload or paste a Job Description
-- 🤖 LLM-based Resume Information Extraction
-- 🧠 Structured Candidate Profile Generation
-- 📊 Weighted ATS Score Calculation
-- 🎯 Contextual Candidate Ranking
-- 📈 Semantic Similarity Matching
-- 📏 Rule-Based Eligibility Validation
-- 💬 Explainable AI Recruiter Feedback
-- 🟢 Green Flags & 🔴 Red Flags
-- ✅ Matching Skills & ❌ Missing Skills
-- 📋 Candidate Summary Dashboard
-- 👨‍💻 Developer Pipeline Viewer
-- ⚡ Interactive Streamlit Interface
+- 🌐 **Modern Django 5 Web Application**: High-performance backend with asynchronous REST APIs.
+- 📱 **Fully Animated & Responsive Web Design**: Custom dark-mode glassmorphic interface seamlessly adapting across mobile, tablet, and laptop viewports.
+- 📄 **Multi-Format Extraction**: Ingest multiple PDF, DOCX, and TXT resumes simultaneously.
+- 📝 **Flexible Job Description Input**: Upload JD files or paste descriptions directly into the workspace.
+- 🤖 **Enhanced LLM Candidate Extraction**: Zero-hallucination JSON extraction utilizing high-precision system prompts.
+- 🧠 **Cross-Encoder Deep Contextual Attention**: Transformer-based joint attention re-ranking.
+- 📊 **Hybrid Composite Scoring**: 30% Deterministic Rules + 30% Bi-Encoder Embeddings + 40% Cross-Encoder Attention.
+- 💬 **Explainable AI Recruiter Diagnostics**: Green flags, red flags, missing skill gap analysis, and executive summaries.
+
 
 ---
 
@@ -113,14 +95,15 @@ Rule Engine   Semantic Search
 LLM Recruiter Explanation
            │
            ▼
- Streamlit Dashboard
+ Django Web Dashboard
 
 
  # 🚀 Technology Stack
 
 | Category | Technologies |
 |----------|--------------|
-| **Frontend** | Streamlit |
+| **Web Framework** | Django 5.2 |
+| **Frontend Architecture** | Responsive HTML5 / CSS3 / Modern Vanilla JS |
 | **Backend** | Python 3.12 |
 | **LLM** | Groq API (GPT-OSS / Qwen Configurable) |
 | **Embedding Model** | all-MiniLM-L6-v2 |
@@ -129,6 +112,7 @@ LLM Recruiter Explanation
 | **Document Parsing** | pdfplumber, python-docx |
 | **Data Processing** | NumPy, Pandas |
 | **Utilities** | JSON, Regular Expressions |
+
 
 ---
 
@@ -226,13 +210,14 @@ Configuration reference:
 
 # ▶️ Running the Application
 
-Launch the Streamlit application:
+Launch the Django development server:
 
 ```bash
-streamlit run app.py
+python manage.py runserver
 ```
 
-The application will automatically open in your default browser.
+The application will be live at `http://127.0.0.1:8000/`.
+
 
 ---
 

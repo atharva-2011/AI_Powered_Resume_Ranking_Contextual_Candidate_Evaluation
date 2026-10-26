@@ -1,7 +1,3 @@
-# This file defines the Cross-Encoder reranking engine,
-# which computes a fine-grained relevance score between a Job Description (JD) and a Resume.
-# Unlike the Bi-Encoder, both texts are processed together, allowing the transformer to attend jointly across both inputs.
-# This produces a more accurate relevance score but is slower than the Bi-Encoder.
 
 """
 Cross-Encoder reranking engine.
@@ -15,73 +11,10 @@ Goal:
   the Bi-Encoder.
 """
 
+from typing import Any
 from config import WEIGHTS
-from sentence_transformers import CrossEncoder
+from modules.cross_encoder import compute_cross_encoder_score
 
-from config import CROSS_ENCODER_MODEL
-
-# Lazy-loaded Cross Encoder model
-_model: CrossEncoder | None = None
-
-
-# this function loads the Cross Encoder model only once and returns it for use in scoring.
-def get_model() -> CrossEncoder:
-    """
-    Load the Cross Encoder model only once.
-    """
-
-    global _model
-
-    if _model is None:
-        _model = CrossEncoder(CROSS_ENCODER_MODEL)
-
-    return _model
-
-
-# this function normalizes the raw model score to the range [0, 100] for consistency in scoring.
-def normalize_score(score: float) -> float:
-    """
-    Normalize the raw model score to the range [0, 100].
-    """
-
-    score = max(0.0, min(1.0, score))
-
-    return round(score * 100, 2)
-
-# this function computes the contextual relevance score between a Job Description and Resume using the Cross Encoder model.
-
-
-def compute_cross_encoder_score(
-    jd_text: str,
-    resume_text: str,
-) -> float:
-    """
-    Compute contextual relevance score between
-    a Job Description and Resume.
-
-    Args:
-        jd_text:
-            Job Description text.
-
-        resume_text:
-            Resume text.
-
-    Returns:
-        float:
-            Relevance score between 0 and 100.
-    """
-
-    model = get_model()
-
-    raw_score = float(
-        model.predict(
-            [
-                (jd_text, resume_text),
-            ]
-        )[0]
-    )
-
-    return normalize_score(raw_score)
 
 
 # this function calculates the rule engine score based on the number of passed checks in the rule results.
@@ -165,9 +98,22 @@ def get_confidence(
     return round(confidence, 2)
 
 
+def extract_skill_list(skills_data: Any) -> list[str]:
+    """Helper to extract a flat list of skill strings from dict or list."""
+    if isinstance(skills_data, list):
+        return [str(s).strip() for s in skills_data if str(s).strip()]
+    elif isinstance(skills_data, dict):
+        flat: list[str] = []
+        for val in skills_data.values():
+            if isinstance(val, list):
+                flat.extend([str(s).strip() for s in val if str(s).strip()])
+            elif isinstance(val, str) and val.strip():
+                flat.append(val.strip())
+        return list(dict.fromkeys(flat))
+    return []
+
+
 # this function generates green flags based on the candidate's skills and passed rule checks, indicating strengths and areas of alignment with the job description.
-
-
 def generate_green_flags(
     extracted_fields: dict,
     jd_text: str,
@@ -175,23 +121,22 @@ def generate_green_flags(
 ) -> list[str]:
 
     flags = []
-
-    skills = extracted_fields.get("skills", [])
+    skills = extract_skill_list(extracted_fields.get("skills", []))
+    jd_lower = jd_text.lower()
 
     for skill in skills:
-        if skill.lower() in jd_text.lower():
+        if skill.lower() in jd_lower:
             flags.append(f"Strong in {skill}")
 
     for check in rule_results.get("checks", []):
         if check.get("passed"):
-            flags.append(check["rule"])
+            reason = check.get("reason") or check.get("rule", "Passed rule check")
+            flags.append(f"Meets requirement: {reason}")
 
     return list(dict.fromkeys(flags))
 
 
 # this function generates red flags based on missing skills and failed rule checks, indicating weaknesses or areas of concern in relation to the job description.
-
-
 def generate_red_flags(
     extracted_fields: dict,
     jd_text: str,
@@ -200,29 +145,16 @@ def generate_red_flags(
 
     flags = []
 
-    skills = extracted_fields.get("skills", [])
-
-    jd_lower = jd_text.lower()
-
-    for word in jd_lower.split():
-
-        if len(word) < 3:
-            continue
-
-        if word not in [s.lower() for s in skills]:
-
-            if word.isalpha():
-                flags.append(f"Missing skill: {word}")
-
     for check in rule_results.get("checks", []):
-
-        if not check.get("passed"):
-            flags.append(check["reason"])
+        if check.get("passed") is False:
+            reason = check.get("reason") or f"Failed {check.get('rule', 'rule')} check"
+            flags.append(reason)
 
     return list(dict.fromkeys(flags))
 
 
-# this function builds a comprehensive dashboard result dictionary containing all relevant scoring information, recommendations, and flags for display in a Streamlit interface.
+
+# this function builds a comprehensive dashboard result dictionary containing all relevant scoring information, recommendations, and flags for display in the web interface.
 def build_dashboard_results(
     extracted_fields: dict,
     jd_text: str,
@@ -231,8 +163,9 @@ def build_dashboard_results(
     cross_encoder_score: float,
 ) -> dict:
     """
-    Returns everything required by Streamlit.
+    Returns candidate dashboard results dictionary.
     """
+
 
     rule_score = calculate_rule_score(rule_results)
 

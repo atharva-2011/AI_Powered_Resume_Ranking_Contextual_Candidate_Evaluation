@@ -22,45 +22,19 @@ list in memory — e.g. drop this one line back into app.py temporarily:
     from dev_tools import render_developer_tools
     render_developer_tools(r["file_name"], dashboard, r["rule_results"], candidate)
 
-Or, for offline inspection without Streamlit at all, use `print_pipeline_report()`
+Or, for offline inspection from terminal or a test script, use `print_pipeline_report()`
 below to dump the same information to your terminal/notebook from a saved
 results object (e.g. if you pickle/json-dump `results` after a run).
+
 """
 
 import json
 
-import streamlit as st
-
-
-def render_developer_tools(candidate_label: str, dashboard: dict, rule_results: dict, candidate: dict) -> None:
-    """Streamlit rendering of one candidate's full pipeline internals.
-
-    Call this inside an app that already has `results` in memory (see
-    module docstring). Shows the same six metrics plus raw JSON that used
-    to live in app.py's per-candidate expander.
-    """
-    st.markdown(f"### 🛠️ Pipeline Internals — {candidate_label}")
-
-    c1, c2 = st.columns(2)
-    with c1:
-        st.metric("Semantic Score", f"{dashboard.get('semantic_score', 0):.2f}")
-        st.metric("Cross Encoder", f"{dashboard.get('cross_encoder_score', 0):.2f}")
-        st.metric("Rule Score", f"{dashboard.get('rule_score', 0):.2f}")
-    with c2:
-        st.metric("Final ATS Score", f"{dashboard.get('final_score', 0):.2f}")
-        st.metric("Confidence", f"{dashboard.get('confidence', 0):.2f}%")
-        st.write("**Recommendation:**", dashboard.get("recommendation", "—"))
-
-    st.markdown("**Rule Engine Output**")
-    st.json(rule_results)
-
-    st.markdown("**Extracted Candidate JSON**")
-    st.json(candidate)
-
 
 def print_pipeline_report(candidate_label: str, dashboard: dict, rule_results: dict, candidate: dict) -> None:
-    """Plain-terminal version of the same report — no Streamlit needed.
+    """Plain-terminal version of pipeline internals report.
     Useful for a quick `python -c` check or a notebook cell."""
+
     print(f"\n{'=' * 60}")
     print(f"PIPELINE INTERNALS — {candidate_label}")
     print(f"{'=' * 60}")

@@ -7,7 +7,8 @@ DEFAULT_MIN_CGPA = 6.5
 DEFAULT_MIN_EXPERIENCE = 0.0
 
 
-# these functions are used to parse numeric values from strings, such as CGPA, percentages, and experience durations. They handle various formats and return float values or None if parsing fails.
+# these functions are used to parse numeric values from strings, such as CGPA, percentages, and experience durations.
+# They handle various formats and return float values or None if parsing fails.
 
 def parse_numeric(value: Any) -> float | None:
     """
@@ -100,9 +101,17 @@ def check_cgpa(
             "reason": "Education details not found.",
         }
 
-    highest = education[0]
+    highest = education[0] if isinstance(education, list) and len(education) > 0 else {}
+    if not isinstance(highest, dict):
+        highest = {}
 
     cgpa = parse_numeric(highest.get("cgpa"))
+
+    # Fallback to percentage converted to ~10-point scale if cgpa is not directly present
+    if cgpa is None and highest.get("percentage") is not None:
+        pct = parse_numeric(highest.get("percentage"))
+        if pct is not None:
+            cgpa = round(pct / 9.5, 2) if pct > 10 else pct
 
     if cgpa is None:
         return {
@@ -126,10 +135,14 @@ def check_experience(
 ) -> dict[str, Any]:
 
     profile = extracted.get("overall_profile", {})
+    if not isinstance(profile, dict):
+        profile = {}
 
     experience = (
         profile.get("total_experience")
         or profile.get("total_experience_years")
+        or extracted.get("total_experience_years")
+        or extracted.get("total_experience")
     )
 
     experience = parse_experience(experience)
@@ -151,6 +164,7 @@ def check_experience(
             f"(Minimum Required: {min_experience})"
         ),
     }
+
 
 
 # ENGINE - this is the main function that applies all deterministic rules and

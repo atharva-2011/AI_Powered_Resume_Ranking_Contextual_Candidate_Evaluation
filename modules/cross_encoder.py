@@ -1,8 +1,3 @@
-# this file defines the Cross-Encoder reranking engine,
-# which computes a fine-grained relevance score between a Job Description (JD) and a Resume.
-# Unlike the Bi-Encoder, both texts are processed together, allowing the transformer to attend jointly across both inputs.
-# This produces a more accurate relevance score but is slower than the Bi-Encoder.
-
 """
 Cross-Encoder reranking engine.
 

@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Resume Ranking & Contextual Candidate Evaluation | By Atharva Ayachit</title>
+  <meta name="description" content="Production-grade AI candidate evaluation system combining deterministic business rules, bi-encoder semantic similarity, and cross-encoder contextual deep learning. Developed by Atharva Ayachit.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+  <!-- Background Ambient Lights -->
+  <div class="ambient-glow ambient-1"></div>
+  <div class="ambient-glow ambient-2"></div>
+
+  <div class="app-container">
+
+    <!-- Navbar Navigation -->
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>TalentRank AI</h1>
+          <div class="brand-badge">Contextual Intelligence System</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>System Online · v2.5</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <h2 class="hero-title">AI-Powered Resume Ranking & Contextual Evaluation</h2>
+      <p class="hero-subtitle">
+        Enterprise-grade talent intelligence designed for recruiters and engineering leaders. Jointly attends across resumes and job descriptions using deterministic verification, bi-encoder embeddings, and deep cross-encoder re-ranking.
+      </p>
+      <div class="signature-tag">
+        <span>Architected & Built with Precision</span>
+        <span>•</span>
+        <span class="author-badge">By Atharva Ayachit</span>
+      </div>
+    </section>
+
+    <!-- Architecture Specifications -->
+    <section class="specs-grid">
+      <div class="spec-chip">
+        <span class="spec-label">Semantic Engine</span>
+        <span class="spec-value">all-MiniLM-L6-v2 (30%)</span>
+      </div>
+      <div class="spec-chip">
+        <span class="spec-label">Cross-Encoder</span>
+        <span class="spec-value">stsb-roberta-base (40%)</span>
+      </div>
+      <div class="spec-chip">
+        <span class="spec-label">LLM Intelligence</span>
+        <span class="spec-value">Qwen 3.6 / LLaMA-3 (Groq)</span>
+      </div>
+      <div class="spec-chip">
+        <span class="spec-label">Rule Engine</span>
+        <span class="spec-value">Deterministic CGPA & Exp (30%)</span>
+      </div>
+      <div class="spec-chip">
+        <span class="spec-label">Platform Stack</span>
+        <span class="spec-value">Django 5 + REST API</span>
+      </div>
+    </section>
+
+    <!-- Upload Workspace -->
+    <section class="workspace-grid">
+      <!-- Resumes Column -->
+      <div class="upload-card">
+        <div class="card-header-bar">
+          <div class="card-title-group">
+            <span class="card-icon">📁</span>
+            <h3 class="card-title">Candidate Resumes</h3>
+          </div>
+          <span class="format-pill">PDF, DOCX, TXT</span>
+        </div>
+
+        <div class="dropzone" id="resumeDropzone">
+          <input type="file" id="resumeInput" class="file-input-hidden" multiple accept=".pdf,.docx,.txt">
+          <div class="drop-icon">⬆</div>
+          <div class="drop-text">Drop candidate resumes here, or click to browse</div>
+          <div class="drop-subtext">Upload single or batch cohort resumes for evaluation</div>
+        </div>
+
+        <div class="file-list" id="resumeFileList"></div>
+      </div>
+
+      <!-- Job Description Column -->
+      <div class="upload-card">
+        <div class="card-header-bar">
+          <div class="card-title-group">
+            <span class="card-icon">📝</span>
+            <h3 class="card-title">Target Job Description</h3>
+          </div>
+          <span class="format-pill">Upload or Paste</span>
+        </div>
+
+        <div class="dropzone" id="jdDropzone" style="padding: 1.5rem 1rem;">
+          <input type="file" id="jdFileInput" class="file-input-hidden" accept=".pdf,.docx,.txt">
+          <div class="drop-icon" style="width: 44px; height: 44px; font-size: 1.25rem;">📄</div>
+          <div class="drop-text" style="font-size: 0.9rem;">Upload JD file (Optional)</div>
+        </div>
+
+        <div class="file-list" id="jdFileList" style="max-height: 80px;"></div>
+
+        <textarea id="jdText" class="textarea-styled" placeholder="Or paste the job description, required skills, responsibilities, and experience prerequisites here..."></textarea>
+      </div>
+    </section>
+
+    <!-- Action Launch CTA -->
+    <div class="action-banner">
+      <button type="button" class="btn-launch" id="analyzeBtn">
+        <span>🚀</span>
+        <span>Run Contextual Evaluation & Rank Candidates</span>
+      </button>
+    </div>
+
+    <!-- Loading State Animation -->
+    <div class="loading-box" id="loadingBox">
+      <div class="spinner-outer"></div>
+      <div class="loading-title">Neural Evaluation in Progress</div>
+      <div class="loading-subtext" id="loadingStatusText">Extracting structured fields and computing joint attention embeddings...</div>
+    </div>
+
+    <!-- Results Section -->
+    <section class="results-section" id="resultsSection">
+      <div class="section-headline">
+        <h3 class="headline-title">Cohort Evaluation Intelligence</h3>
+      </div>
+
+      <!-- Cohort Summary Metrics -->
+      <div class="cohort-grid">
+        <div class="cohort-stat-card">
+          <div class="cohort-stat-label">Candidates Evaluated</div>
+          <div class="cohort-stat-val" id="metricEvaluated">0</div>
+        </div>
+        <div class="cohort-stat-card">
+          <div class="cohort-stat-label">🟢 Highly Recommended</div>
+          <div class="cohort-stat-val" style="color:#10b981;" id="metricStrong">0</div>
+        </div>
+        <div class="cohort-stat-card">
+          <div class="cohort-stat-label">🟡 Consider / Review</div>
+          <div class="cohort-stat-val" style="color:#f59e0b;" id="metricConsider">0</div>
+        </div>
+        <div class="cohort-stat-card">
+          <div class="cohort-stat-label">🔴 Not Recommended</div>
+          <div class="cohort-stat-val" style="color:#ef4444;" id="metricReject">0</div>
+        </div>
+        <div class="cohort-stat-card">
+          <div class="cohort-stat-label">Average Cohort Score</div>
+          <div class="cohort-stat-val" style="color:var(--accent-cyan);" id="metricAvgScore">0%</div>
+        </div>
+      </div>
+
+      <!-- Candidates Stack -->
+      <div class="section-headline">
+        <h3 class="headline-title">Ranked Candidate Leaderboard</h3>
+      </div>
+
+      <div class="candidate-cards-container" id="candidatesContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>
+        AI-Powered Resume Ranking & Contextual Candidate Evaluation System
+      </p>
+      <p style="margin-top:0.35rem;">
+        Engineered & Developed <span class="footer-author">By Atharva Ayachit</span>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
